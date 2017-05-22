@@ -21,7 +21,7 @@ class ActionParser
       $slack_client.chat_postMessage(channel: channel, text: $giphy_client.translate("war battle"))
       result = Game.find(channel_game).turn
 
-      if result[:game_over]
+      if result.game_over
         $slack_client.chat_postMessage(channel: channel, text: "GAME OVER! #{result[:winner]} won!")
         $slack_client.chat_postMessage(channel: channel, text: "Wanna play again?")
         Redis.current.set("state:#{channel}", "request_to_start_game")

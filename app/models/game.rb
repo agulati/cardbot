@@ -22,30 +22,34 @@ class Game < ApplicationRecord
   end
 
   def turn cards_for_winner = [], result = {}
-    result[:player_cards] ||= []
-    result[:bot_cards]    ||= []
-    result[:wars]         ||= 0
+    result = Result.new
+
+    result.player_cards ||= []
+    result.bot_cards    ||= []
+    result.wars         ||= 0
 
     player_card           = @player_deck.shift
     bot_card              = @bot_deck.shift
 
-    result[:player_cards] << player_card
-    result[:bot_cards]    << bot_card
+    result.player_cards << player_card
+    result.bot_cards    << bot_card
     cards_for_winner      += [player_card, bot_card]
 
     if player_card.value > bot_card.value
       @player_deck += cards_for_winner
-      result[:winner] = "player"
+      result.winner = "player"
+      result.loser  = "bot"
     elsif bot_card.value > player_card.value
       @bot_deck += cards_for_winner
-      result[:winner] = "bot"
+      result.winner = "bot"
+      result.loser  = "player"
     else
-      result[:wars] += 1
+      result.wars += 1
       cards_to_risk = [@player_deck.length-1, @bot_deck.length-1, 3].min
       turn(cards_for_winner + @player_deck.shift(cards_to_risk) + @bot_deck.shift(cards_to_risk), result)
     end
 
-    result[:game_over] = over?
+    result.game_over = over?
 
     Redis.current.set("game:#{id}", self.to_json)
     result

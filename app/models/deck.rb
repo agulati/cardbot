@@ -3,19 +3,19 @@ class Deck < ApplicationRecord
   attr_accessor :cards
 
   SUITS = [ :diamonds, :clubs, :hearts, :spades ]
-  CARDS = [ { value: 2,  display: "2"  },
-            { value: 3,  display: "3"  },
-            { value: 4,  display: "4"  },
-            { value: 5,  display: "5"  },
-            { value: 6,  display: "6"  },
-            { value: 7,  display: "7"  },
-            { value: 8,  display: "8"  },
-            { value: 9,  display: "9"  },
-            { value: 10, display: "10" },
-            { value: 11, display: "J"  },
-            { value: 12, display: "Q"  },
-            { value: 13, display: "K"  },
-            { value: 14, display: "A"  }
+  CARDS = [ { value: 2,  display: "2"     },
+            { value: 3,  display: "3"     },
+            { value: 4,  display: "4"     },
+            { value: 5,  display: "5"     },
+            { value: 6,  display: "6"     },
+            { value: 7,  display: "7"     },
+            { value: 8,  display: "8"     },
+            { value: 9,  display: "9"     },
+            { value: 10, display: "10"    },
+            { value: 11, display: "Jack"  },
+            { value: 12, display: "Queen" },
+            { value: 13, display: "King"  },
+            { value: 14, display: "Ace"   }
           ]
 
   def self.shuffle deck
