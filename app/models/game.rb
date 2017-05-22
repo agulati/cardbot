@@ -3,21 +3,25 @@ class Game < ApplicationRecord
   attr_reader :player_deck, :bot_deck, :id
 
   def self.find id
-    YAML.load(Redis.current.get("game:#{id}"))
+    new(JSON.parse(Redis.current.get("game:#{id}")))
   end
 
-  def initialize
-    @id = SecureRandom.uuid
-    deck = Deck.new
-    Deck.shuffle(deck)
+  def initialize data = {}
+    @id = data["id"] || SecureRandom.uuid
 
-    @player_deck, @bot_deck = deck.deal(2)
+    unless data.empty?
+      @player_deck  = data["player_deck"].map { |c| Card.new(suit: c["suit"].to_sym, value: c["value"].to_i, display: c["display"]) }
+      @bot_deck     = data["bot_deck"].map    { |c| Card.new(suit: c["suit"].to_sym, value: c["value"].to_i, display: c["display"]) }
+    else
+      deck = Deck.new
+      Deck.shuffle(deck)
+      @player_deck, @bot_deck = deck.deal(2)
+      Redis.current.set("game:#{id}", self.to_json)
+    end
 
-    Redis.current.set("game:#{id}", self.to_yaml)
   end
 
   def turn cards_for_winner = [], result = {}
-
     result[:player_cards] ||= []
     result[:bot_cards]    ||= []
     result[:wars]         ||= 0
@@ -43,7 +47,7 @@ class Game < ApplicationRecord
 
     result[:game_over] = over?
 
-    Redis.current.set("game:#{id}", self.to_yaml)
+    Redis.current.set("game:#{id}", self.to_json)
     result
   end
 

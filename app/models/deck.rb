@@ -1,6 +1,6 @@
 class Deck < ApplicationRecord
 
-  attr_reader :cards
+  attr_accessor :cards
 
   SUITS = [ :diamonds, :clubs, :hearts, :spades ]
   CARDS = [ { value: 2,  display: "2"  },
