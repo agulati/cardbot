@@ -6,4 +6,7 @@ Rails.application.routes.draw do
       post "turn"
     end
   end
+
+  resources :messages, only: [:create]
+  resources :events, only: [:create]
 end

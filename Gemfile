@@ -16,6 +16,10 @@ gem "jbuilder",                 "~> 2.5"
 gem "redis",                    "~> 3.0"
 gem "redis-namespace"
 
+gem "slack-ruby-client"
+gem "eventmachine"
+gem "faye-websocket"
+
 group :development, :test do
   gem "byebug",                 platforms: [:mri, :mingw, :x64_mingw]
   gem "capybara",               "~> 2.13"
