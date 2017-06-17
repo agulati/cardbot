@@ -6,12 +6,7 @@ class GiphyClient
 
   def translate term
     response = get("translate", { "s" => term })
-    if response["data"] && response["data"]["images"]["downsized"]
-      # response["data"]["images"]["fixed_height"]["url"]
-      response["data"]["embed_url"]
-    else
-      false
-    end
+    response["data"]["images"]["downsized"]["url"]
   end
 
   private

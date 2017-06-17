@@ -13,7 +13,7 @@ class ActionParser
       $slack_client.chat_postMessage(channel: channel, text: "Ok, let's do it!")
       game = Game.new
       Redis.current.set("game:#{channel}", game.id)
-      $slack_client.chat_postMessage(channel: channel, text: $giphy_client.translate("war battle"))
+      $slack_client.chat_postMessage(channel: channel, attachment: [ { image_url: $giphy_client.translate("war battle") } ])
       $slack_client.chat_postMessage(channel: channel, text: game.turn.to_s)
       $slack_client.chat_postMessage(channel: channel, text: "Next battle?")
       Redis.current.set("state:#{channel}", "request_for_next_turn")
