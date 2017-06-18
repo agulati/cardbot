@@ -6,6 +6,11 @@ class Game < ApplicationRecord
     new(JSON.parse(Redis.current.get("game:#{id}")))
   end
 
+  def self.score channel_id
+    status = new(JSON.parse(Redis.current.get("game:#{Redis.current.get("game:#{channel_id}")}"))).status
+    $slack_client.chat_postMessage(channel: channel_id, text: "You have #{status[:player]} and I have #{status[:bot]}")
+  end
+
   def initialize data = {}
     @id = data["id"] || SecureRandom.uuid
 
@@ -18,7 +23,6 @@ class Game < ApplicationRecord
       @player_deck, @bot_deck = deck.deal(2)
       Redis.current.set("game:#{id}", self.to_json)
     end
-
   end
 
   def turn cards_for_winner = [], result = {}

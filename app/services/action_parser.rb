@@ -6,7 +6,7 @@ class ActionParser
     channel_state = Redis.current.get("state:#{channel}")
     channel_game  = Redis.current.get("game:#{channel}")
 
-    if channel_state.nil? && text =~ /play|game|start/
+    if channel_state.nil? && text =~ /play|game|start|new/
       $slack_client.chat_postMessage(channel: channel, text: "Would you like to play a game of War with me?")
       Redis.current.set("state:#{channel}", "request_to_start_game")
     elsif channel_state == "request_to_start_game" && text.strip =~ /^y/

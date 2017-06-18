@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post "score", controller: "games", action: "score"
+
   resources :messages, only: [:create]
   resources :events, only: [:create]
 end
